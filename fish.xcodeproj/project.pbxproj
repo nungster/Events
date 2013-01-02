@@ -130,6 +130,7 @@
 		929511A814DAA9970048B40F /* GDataXMLNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataXMLNode.h; sourceTree = "<group>"; };
 		92C670F8168350BF00D175D6 /* NBEventManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBEventManager.h; sourceTree = "<group>"; };
 		92C670F9168350BF00D175D6 /* NBEventManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NBEventManager.m; sourceTree = "<group>"; };
+		92C67125168D3FB000D175D6 /* 1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = 1.xcdatamodel; sourceTree = "<group>"; };
 		92F41FF4167D2F9D007BE77A /* RestKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RestKit.xcodeproj; path = RestKit/RestKit.xcodeproj; sourceTree = "<group>"; };
 		92F459321655CFD000307405 /* EventCD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventCD.h; sourceTree = "<group>"; };
 		92F459331655CFD000307405 /* EventCD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventCD.m; sourceTree = "<group>"; };
@@ -582,9 +583,10 @@
 		9212D31C14DB384000BBAB34 /* Fishn.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				92C67125168D3FB000D175D6 /* 1.xcdatamodel */,
 				9212D31D14DB384000BBAB34 /* Fishn.xcdatamodel */,
 			);
-			currentVersion = 9212D31D14DB384000BBAB34 /* Fishn.xcdatamodel */;
+			currentVersion = 92C67125168D3FB000D175D6 /* 1.xcdatamodel */;
 			path = Fishn.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

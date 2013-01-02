@@ -20,7 +20,8 @@
 @dynamic updatedAt;
 @dynamic createdAt;
 @dynamic latitude, longitude, airTemp, length;
-@dynamic thumbnail, photo;
+@dynamic photo;
+@dynamic thumbnail;
 
 
 + (void)initialize {

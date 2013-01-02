@@ -21,10 +21,10 @@
 	NSNumber	*longitude;
 	NSNumber	*airTemp;
 	NSNumber	*length;
-	UIImage *thumbnail;
+	NSString *thumbnail;
 }
 
-@property (nonatomic, retain) UIImage *thumbnail;
+@property (nonatomic, retain) NSString *thumbnail;
 //@property (nonatomic, retain) NSDate *creationDate;
 @property (nonatomic, retain) Photo *photo;
 
@@ -34,7 +34,7 @@
 @property (nonatomic, retain) NSString *amount;
 @property (nonatomic, retain) NSDate *updatedAt;
 @property (nonatomic, retain) NSDate *createdAt;
-@property (nonatomic, strong) NSNumber *latitude;
+@property (nonatomic, retain) NSNumber *latitude;
 @property (nonatomic, retain) NSNumber *longitude;
 @property (nonatomic, retain) NSNumber *airTemp;
 @property (nonatomic, retain) NSNumber *length;

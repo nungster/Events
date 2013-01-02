@@ -42,13 +42,24 @@ NSURL *gBaseURL = nil;
 	// Initialize RestKit
 	gBaseURL = [[NSURL alloc] initWithString:@"http://localhost:3000"];
 	RKObjectManager *objectManager = [RKObjectManager managerWithBaseURL:gBaseURL];
+//	NSURL *modelURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Fishn" ofType:@"momd"]];
     // Enable Activity Indicator Spinner
     [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
 		
     // Initialize managed object store
+//	managedObjectModel = [[[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL] mutableCopy];
     managedObjectModel = [NSManagedObjectModel mergedModelFromBundles:nil];
+	
     RKManagedObjectStore *managedObjectStore = [[RKManagedObjectStore alloc] initWithManagedObjectModel:managedObjectModel];
-    objectManager.managedObjectStore = managedObjectStore;
+	objectManager.managedObjectStore = managedObjectStore;
+
+	// configure RestKit Data Store
+/*
+	NSString *path = [RKApplicationDataDirectory() stringByAppendingPathComponent:@"Fishn.sqlite"];
+	[managedObjectStore addSQLitePersistentStoreAtPath:path fromSeedDatabaseAtPath:nil withConfiguration:nil options:nil error:nil];
+	[managedObjectStore createManagedObjectContexts];
+*/
+    
 	// Setup our object mappings
     /**
      Mapping by entity. Here we are configuring a mapping by targetting a Core Data entity with a specific
@@ -56,7 +67,6 @@ NSURL *gBaseURL = nil;
      there is no backing model class!
      */
 	RKEntityMapping *eventMapping = [RKEntityMapping mappingForEntityForName:@"Event" inManagedObjectStore:managedObjectStore];
-	eventMapping.identificationAttributes = @[ @"eventId" ];
 	[eventMapping addAttributeMappingsFromDictionary:@{
 	 @"id": @"eventId",
 	 @"name": @"name",
@@ -69,11 +79,12 @@ NSURL *gBaseURL = nil;
 	 @"thumbnail": @"thumbnail",
 	 @"airTemp": @"airTemp",
 	 }];
-	
-	RKRelationshipMapping *eventRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"events"
-																						   toKeyPath:@"events"
-																						 withMapping:eventMapping];
-	[eventMapping addPropertyMapping:eventRelationship];
+	eventMapping.identificationAttributes = @[ @"eventId" ];
+
+	//RKRelationshipMapping *eventRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"events"
+	//																					   toKeyPath:@"events"
+	//																					 withMapping:eventMapping];
+	//[eventMapping addPropertyMapping:eventRelationship];
  
 	// Register our mappings with the provider
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:eventMapping
@@ -82,7 +93,7 @@ NSURL *gBaseURL = nil;
                                                                                        statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
     [objectManager addResponseDescriptor:responseDescriptor];
 
-	/*
+	// Core Data configuration
     [managedObjectStore createPersistentStoreCoordinator];
     NSString *storePath = [RKApplicationDataDirectory() stringByAppendingPathComponent:@"Fishn.sqlite"];
     //NSString *seedPath = [[NSBundle mainBundle] pathForResource:@"RKSeedDatabase" ofType:@"sqlite"];
@@ -95,7 +106,8 @@ NSURL *gBaseURL = nil;
     
     // Configure a managed object cache to ensure we do not create duplicate objects
     managedObjectStore.managedObjectCache = [[RKInMemoryManagedObjectCache alloc] initWithManagedObjectContext:managedObjectStore.persistentStoreManagedObjectContext];
-*/
+	
+	// *****************************************************************************************************************
 	
 	
 	
@@ -115,12 +127,14 @@ NSURL *gBaseURL = nil;
 	[window makeKeyAndVisible];
 	
     [self login];
+	
 	//NSLog(@"App Del %@ - %@", user.login, user.password);
 	//[[RKObjectManager sharedManager].HTTPClient setAuthorizationHeaderWithUsername:user.login password:user.password];
 	
 	[rootViewController release];
 	[aNavigationController release];
     
+
     return YES;
 }
 

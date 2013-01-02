@@ -16,6 +16,7 @@
 #import <RestKit/RestKit.h>
 #import <RestKit/CoreData.h>
 #import "User.h"
+#import "Photo.h"
 #import "NBEventManager.h"
 
 
@@ -49,13 +50,86 @@
 
 - (void)viewDidLoad {
 	LocationsAppDelegate *appDelegate = (LocationsAppDelegate *)[[UIApplication sharedApplication] delegate];
-	managedObjectContext = [appDelegate managedObjectContext];
+	managedObjectContext = appDelegate.managedObjectContext;
 		
     [super viewDidLoad];
+	
 	// Set debug logging level. Set to 'RKLogLevelTrace' to see JSON payload
     RKLogConfigureByName("RestKit/Network", RKLogLevelDebug);
+	RKLogConfigureByName("RestKit/CoreData", RKLogLevelDebug);
+	RKLogConfigureByName("RestKit/ObjectMapping", RKLogLevelDebug);
+
+    // Enable Activity Indicator Spinner
+    [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
 	
+    // Initialize managed object model
+		//NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"Fishn" withExtension:@"momd"];
+		//NSManagedObjectModel *managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
+//	NSManagedObjectModel *managedObjectModel = appDelegate.managedObjectModel;
+//    managedObjectModel = [NSManagedObjectModel mergedModelFromBundles:nil];
+	//NSLog(@"managed object model: %@", managedObjectModel);
 	
+	// Initialize managed object store
+//    RKManagedObjectStore *managedObjectStore = [[RKManagedObjectStore alloc] initWithManagedObjectModel:managedObjectModel];
+//	objectManager.managedObjectStore = managedObjectStore;
+	
+
+	// Persistent Store
+	NSError *error;
+	//NSString *path = [RKApplicationDataDirectory() stringByAppendingPathComponent:@"Fishn.sqlite"];
+	//NSPersistentStore *persistentStore = [managedObjectStore addSQLitePersistentStoreAtPath:path fromSeedDatabaseAtPath:nil withConfiguration:nil options:nil error:&error];
+	//if (error) {
+	//	NSLog(@"unresolved error %@, %@", error, [error userInfo]);
+	//	abort();
+	//}
+	//NSLog(@"persistent store coordinator: %@", managedObjectStore.persistentStoreCoordinator);
+	//NSLog(@"persistent store: %@", persistentStore);
+	
+	// managed object contexts
+//	[managedObjectStore createManagedObjectContexts];
+	// NSLog(@"managed object context: %@", managedObjectStore.mainQueueManagedObjectContext);
+	
+	// managed object cache
+//	managedObjectStore.managedObjectCache = [[RKInMemoryManagedObjectCache alloc] initWithManagedObjectContext:managedObjectStore.mainQueueManagedObjectContext];
+	// NSLog(@"mangaged object cache: %@", managedObjectStore.managedObjectCache);
+
+
+	// Setup our object mappings
+    /**
+     Mapping by entity. Here we are configuring a mapping by targetting a Core Data entity with a specific
+     name. This allows us to map back Twitter user objects directly onto NSManagedObject instances --
+     there is no backing model class!
+     */
+//	RKEntityMapping *eventMapping = [RKEntityMapping mappingForEntityForName:@"Event" inManagedObjectStore:managedObjectStore];
+/*	[eventMapping addAttributeMappingsFromDictionary:@{
+	 @"id": @"eventId",
+	 @"name": @"name",
+	 @"amount": @"amount",
+	 @"length": @"length",
+	 @"updated_at": @"updatedAt",
+	 @"created_at": @"createdAt",
+	 @"latitude": @"latitude",
+	 @"longitude": @"longitude",
+	 @"thumbnail": @"thumbnail",
+	 @"airTemp": @"airTemp",
+	 }];
+	eventMapping.identificationAttributes = @[ @"eventId" ];
+*/
+	// relationship mapping (if mapping multiple entities)
+	//
+	//RKRelationshipMapping *eventRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"events"
+	//																					   toKeyPath:@"events"
+	//																					 withMapping:eventMapping];
+	//[eventMapping addPropertyMapping:eventRelationship];
+	
+	// response descriptor
+	// Register our mappings with the provider
+/*    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:eventMapping
+                                                                                       pathPattern:@"/events.json"
+                                                                                           keyPath:nil
+                                                                                       statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
+    [objectManager addResponseDescriptor:responseDescriptor];
+*/	
 	// Set the title.
     self.title = @"Fishn";
     self.tableView.separatorColor = [UIColor clearColor];
@@ -144,7 +218,7 @@
 	[sortDescriptors release];
 	
 	// Execute the fetch -- create a mutable copy of the result.
-	NSError *error = nil;
+	//NSError *error = nil;
 	NSMutableArray *mutableFetchResults = [[managedObjectContext executeFetchRequest:frequest error:&error] mutableCopy];
 	if (mutableFetchResults == nil) {
 		// Handle the error.
@@ -178,17 +252,17 @@
  */
 	NSLog(@"RVC %@ - %@", appDelegate.user.login, appDelegate.user.password);
 	[[NBEventManager sharedManager] setUsername:appDelegate.user.login andPassword:appDelegate.user.password];
-	
 	[RKObjectManager sharedManager].HTTPClient = [NBEventManager sharedManager];
 	
 	/*
-	[[NBEventManager sharedManager] getPath:@"/events.json" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-	    self.eventsArray = (NSArray *)[responseObject objectForKey:@"events"];
-	//	NSLog(@"JSON");
-	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-		// error stuff here
-	}];
-*/
+	 [[NBEventManager sharedManager] getPath:@"/events.json" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+	 self.eventsArray = (NSArray *)[responseObject objectForKey:@"events"];
+	 //	NSLog(@"JSON");
+	 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+	 // error stuff here
+	 }];
+	 */
+	
     [self loadData];
 
 
@@ -196,8 +270,10 @@
 
 - (void)loadData
 {
-    // Load the object model via RestKit
-    [[RKObjectManager sharedManager] getObjectsAtPath:@"events.json" parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+	
+	// Load the object model via RestKit
+	//RKObjectManager *manager = [RKObjectManager managerWithBaseURL:gBaseURL];
+    [[RKObjectManager sharedManager] getObjectsAtPath:@"/events.json" parameters:nil success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         RKLogInfo(@"Load complete: Table should refresh...");
 		NSLog(@"It worked: %@", [mappingResult array]);
 		

@@ -243,7 +243,7 @@
 	
 	UIGraphicsBeginImageContext(rect.size);
 	[photo.image drawInRect:rect];
-	event.thumbnail = UIGraphicsGetImageFromCurrentImageContext();
+	//event.thumbnail = UIGraphicsGetImageFromCurrentImageContext();
 	UIGraphicsEndImageContext();
 	
 	// Commit the change.
