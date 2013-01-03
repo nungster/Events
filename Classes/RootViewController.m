@@ -51,7 +51,8 @@
 - (void)viewDidLoad {
 	LocationsAppDelegate *appDelegate = (LocationsAppDelegate *)[[UIApplication sharedApplication] delegate];
 	managedObjectContext = appDelegate.managedObjectContext;
-		
+	objectManager = appDelegate.objectManager;
+	
     [super viewDidLoad];
 	
 	// Set debug logging level. Set to 'RKLogLevelTrace' to see JSON payload
@@ -65,8 +66,8 @@
     // Initialize managed object model
 		//NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"Fishn" withExtension:@"momd"];
 		//NSManagedObjectModel *managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
-//	NSManagedObjectModel *managedObjectModel = appDelegate.managedObjectModel;
-//    managedObjectModel = [NSManagedObjectModel mergedModelFromBundles:nil];
+	NSManagedObjectModel *managedObjectModel = appDelegate.managedObjectModel;
+    managedObjectModel = [NSManagedObjectModel mergedModelFromBundles:nil];
 	//NSLog(@"managed object model: %@", managedObjectModel);
 	
 	// Initialize managed object store
@@ -100,8 +101,8 @@
      name. This allows us to map back Twitter user objects directly onto NSManagedObject instances --
      there is no backing model class!
      */
-//	RKEntityMapping *eventMapping = [RKEntityMapping mappingForEntityForName:@"Event" inManagedObjectStore:managedObjectStore];
-/*	[eventMapping addAttributeMappingsFromDictionary:@{
+/**	RKEntityMapping *eventMapping = [RKEntityMapping mappingForEntityForName:@"Event" inManagedObjectStore:managedObjectStore];
+	[eventMapping addAttributeMappingsFromDictionary:@{
 	 @"id": @"eventId",
 	 @"name": @"name",
 	 @"amount": @"amount",
@@ -114,7 +115,7 @@
 	 @"airTemp": @"airTemp",
 	 }];
 	eventMapping.identificationAttributes = @[ @"eventId" ];
-*/
+
 	// relationship mapping (if mapping multiple entities)
 	//
 	//RKRelationshipMapping *eventRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"events"
@@ -124,12 +125,12 @@
 	
 	// response descriptor
 	// Register our mappings with the provider
-/*    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:eventMapping
-                                                                                       pathPattern:@"/events.json"
-                                                                                           keyPath:nil
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:eventMapping
+                                                                                       pathPattern:nil
+                                                                                           keyPath:@"event"
                                                                                        statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
     [objectManager addResponseDescriptor:responseDescriptor];
-*/	
+**/	
 	// Set the title.
     self.title = @"Fishn";
     self.tableView.separatorColor = [UIColor clearColor];

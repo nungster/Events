@@ -18,6 +18,7 @@
 	NSManagedObjectModel *managedObjectModel;
 	NSManagedObjectContext *managedObjectContext;
 	
+	RKObjectManager *objectManager;
 	User *user;
 
 }
@@ -27,6 +28,8 @@
 @property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+@property (nonatomic, retain) RKObjectManager *objectManager;
+
 @property (nonatomic, retain) User *user;
 
 - (NSString *)applicationDocumentsDirectory;

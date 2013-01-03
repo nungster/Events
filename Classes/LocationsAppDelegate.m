@@ -33,6 +33,8 @@ NSURL *gBaseURL = nil;
 @synthesize window;
 @synthesize navigationController;
 @synthesize user;
+@synthesize objectManager;
+
 
 #pragma mark -
 #pragma mark Application lifecycle
@@ -41,7 +43,7 @@ NSURL *gBaseURL = nil;
 	
 	// Initialize RestKit
 	gBaseURL = [[NSURL alloc] initWithString:@"http://localhost:3000"];
-	RKObjectManager *objectManager = [RKObjectManager managerWithBaseURL:gBaseURL];
+	objectManager = [RKObjectManager managerWithBaseURL:gBaseURL];
 //	NSURL *modelURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Fishn" ofType:@"momd"]];
     // Enable Activity Indicator Spinner
     [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
@@ -88,8 +90,8 @@ NSURL *gBaseURL = nil;
  
 	// Register our mappings with the provider
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:eventMapping
-                                                                                       pathPattern:@"/events.json"
-                                                                                           keyPath:nil
+                                                                                       pathPattern:nil
+                                                                                           keyPath:@"event"
                                                                                        statusCodes:RKStatusCodeIndexSetForClass(RKStatusCodeClassSuccessful)];
     [objectManager addResponseDescriptor:responseDescriptor];
 

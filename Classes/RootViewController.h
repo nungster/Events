@@ -32,7 +32,7 @@
 @property (nonatomic, retain) NSArray *eventsArray;
 @property (nonatomic, retain) NSArray *data;
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;	    
-@property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
+@property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 
 @property (nonatomic, retain) CLLocationManager *locationManager;
 @property (nonatomic, retain) UIBarButtonItem *addButton;
